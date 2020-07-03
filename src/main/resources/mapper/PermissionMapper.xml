@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.project.system.mapper.PermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.demo.project.system.entity.Permission">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="permission" property="permission"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="all_columns">
+        id, name, permission
+    </sql>
+    <sql id="all_values_with_table_name">
+        sys_permission.id, sys_permission.name, sys_permission.permission
+    </sql>
+    <sql id="tb">sys_permission</sql>
+    <sql id="all_values">
+        #{id}, #{name}, #{permission}
+    </sql>
+    <select id="findByRoleId" resultType="com.example.demo.project.system.entity.Permission">
+        select
+        <include refid="all_values_with_table_name"/>
+        FROM<include refid="tb"/>, sys_role_permission
+        where sys_role_permission.role_id = #{value} AND
+        sys_permission.id = sys_role_permission.permission_id
+    </select>
+    <select id="findAll" resultType="com.example.demo.project.system.entity.Permission">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+    </select>
+
+</mapper>

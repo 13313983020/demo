@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.project.system.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.demo.project.system.entity.User">
+        <id column="user_id" property="userId"/>
+        <result column="login_enable" property="loginEnable"/>
+        <result column="login_error" property="loginError"/>
+        <result column="login_last" property="loginLast"/>
+        <result column="user_avatar" property="userAvatar"/>
+        <result column="user_desc" property="userDesc"/>
+        <result column="user_display_name" property="userDisplayName"/>
+        <result column="user_email" property="userEmail"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_pass" property="userPass"/>
+        <result column="user_site" property="userSite"/>
+        <result column="status" property="status"/>
+        <result column="reate_time" property="reateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="all_columns">
+        user_id, login_enable, login_error, login_last, user_avatar, user_desc, user_display_name, user_email, user_name, user_pass, user_site, status, reate_time
+    </sql>
+
+    <sql id="normal">0</sql>
+
+    <sql id="all_columns_with_table_name">
+        sys_user.user_id, sys_user.user_name, sys_user.user_display_name,
+        sys_user.user_pass, sys_user.user_email, sys_user.user_avatar,
+        sys_user.user_desc, sys_user.user_site, sys_user.login_enable,
+        sys_user.login_last, sys_user.login_error, sys_user.status, sys_user.create_time
+    </sql>
+
+    <sql id="tb">sys_user</sql>
+
+    <sql id="all_values">
+        #{userId}, #{userName}, #{userDisplayName}, #{userEmail}, #{userPass},
+        #{userAvatar}, #{userDesc}, #{userSite}, #{loginEnable}, #{loginLast},
+        #{loginError}, #{status}, #{createTime}
+    </sql>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+    </select>
+
+    <select id="findByRoleId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="all_columns_with_table_name"/>
+        FROM sys_user_role,sys_user WHERE sys_user_role.role_id=#{roleId} AND sys_user_role.user_id=sys_user.user_id
+    </select>
+
+    <select id="findByUserName" resultType="BaseResultMap">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE user_name = #{value} AND status =
+        <include refid="normal"/>
+        LIMIT 1
+    </select>
+
+    <select id="findByUserEmail" resultType="BaseResultMap">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE user_email = #{value} AND status =
+        <include refid="normal"/>
+        LIMIT 1
+    </select>
+
+    <select id="findByUserId" resultType="BaseResultMap">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE user_id = #{value}
+    </select>
+
+</mapper>
